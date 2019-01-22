@@ -1,7 +1,5 @@
 <?php
 
-require_once "CustomException.php";
-
 interface IException
 {
   public function getMessage();

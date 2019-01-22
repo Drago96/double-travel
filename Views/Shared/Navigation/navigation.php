@@ -8,6 +8,12 @@
                 <img class="logo" src="/Assets/images/logo.png"/>
             </a>
         </li>
-        <li><a href="/">Home</a></li>
+        <?php
+            if($this->isAuthenticated()) {
+              echo $this->partial("Shared/Navigation/authenticated");
+            } else {
+              echo $this->partial("Shared/Navigation/anonymous");
+            }
+        ?>
     </ul>
 </nav>

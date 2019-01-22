@@ -1,7 +1,7 @@
 <?php
 
-require_once("../Utilities/Validator.php");
-require_once("../Utilities/Exceptions/ValidationException.php");
+require_once(ROOT . "Utilities/Validator.php");
+require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
 
 class User extends Model
 {

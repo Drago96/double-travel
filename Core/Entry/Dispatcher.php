@@ -13,6 +13,8 @@ class Dispatcher
 
   public function dispatch()
   {
+    session_start();
+
     $request = new Request();
 
     $this->dispatchParams = Router::parse($request->getPath());

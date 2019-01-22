@@ -12,11 +12,11 @@
 </nav>
 
 <header>
-    <?php echo $this->partial("Shared/navigation"); ?>
+  <?php echo $this->partial("Shared/Navigation/navigation"); ?>
 </header>
 
 <main role="main" class="container">
-    <?php echo $content_for_layout; ?>
+  <?php echo $content_for_layout; ?>
 </main>
 
 <footer>

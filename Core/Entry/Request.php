@@ -18,4 +18,26 @@ class Request
   {
     return $this->url_parts['path'];
   }
+
+  public function getForm()
+  {
+    return $this->secureForm();
+  }
+
+  private function secureForm()
+  {
+    $form = [];
+
+    foreach ($_POST as $key => $value)
+    {
+      $form[$key] = $this->secureInput($value);
+    }
+
+    return $form;
+  }
+
+  private function secureInput($value)
+  {
+    return htmlspecialchars(stripslashes(trim($value)));
+  }
 }

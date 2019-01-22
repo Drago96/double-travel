@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="/Assets/styles/navigation.css">
+
 <nav>
     <ul class="navigation">
         <li>

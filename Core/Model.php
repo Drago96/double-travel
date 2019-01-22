@@ -11,7 +11,7 @@ abstract class Model
 
   public function __sleep()
   {
-    return array_keys(getModelPublicProperies($this));
+    return array_keys(getModelPublicProperties($this));
   }
 
   public function isValid()
@@ -22,6 +22,6 @@ abstract class Model
   abstract public function getValidationErrors();
 }
 
-function getModelPublicProperies($object) {
+function getModelPublicProperties($object) {
   return get_object_vars($object);
 }

@@ -1,19 +1,34 @@
 .navigation {
-    list-style-type: none;
+    background-color: #333;
+    display: flex;
+    justify-content: space-between;
+    height: 5em;
     margin: 0;
     overflow: hidden;
-    height: 5em;
-    background-color: #333;
     padding-left: 5em;
     padding-right: 5em;
 }
 
-.navigation li {
-    float: left;
-    height: 100%;
-    align-items: center;
+.navigation-links {
     display: flex;
+    height: 100%;
+    margin: 0;
+}
+
+.navigation-links li {
+    display: flex;
+    height: 100%;
+}
+
+.navigation .logo-link,
+.navigation-links li {
+    align-items: center;
     font-size: 1.5em;
+}
+
+.navigation .logo-link:hover,
+.navigation li:hover {
+    background-color: #111;
 }
 
 .navigation a {
@@ -23,10 +38,6 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-}
-
-.navigation li:hover {
-    background-color: #111;
 }
 
 .logo {

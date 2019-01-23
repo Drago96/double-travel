@@ -12,7 +12,7 @@
 </nav>
 
 <header>
-  <?php echo $this->partial("Shared/Navigation/navigation"); ?>
+  <?php echo $this->partial("Shared/navigation"); ?>
 </header>
 
 <main role="main" class="container">

@@ -1,0 +1,57 @@
+.authentication-form {
+    background-color: #f5f5f0;
+    min-width: 500px;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+}
+
+.form-header {
+    background-color: #333;
+    color: #ffffff;
+    font-weight: unset;
+    height: 3em;
+    line-height: 3em;
+    margin-bottom: 0;
+    margin-top: 0;
+    text-align: center;
+}
+
+.form-body {
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    padding: 2em 2em 2em 2em;
+}
+
+.form-input {
+    box-sizing: border-box;
+    margin-bottom: 1.5em;
+    padding: 1em 1em 1em 1em;
+    width: 100%;
+}
+
+.form-input.error {
+    border: 1px solid #ff0000;
+}
+
+.field-error-message {
+    color: #ff0000;
+}
+
+::placeholder {
+    color: #b0b0b0;
+    opacity: 1;
+}
+
+.form-submit {
+    background-color: #333;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    height: 3em;
+    outline: none;
+    width: 100%;
+}

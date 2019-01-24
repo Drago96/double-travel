@@ -17,7 +17,7 @@ class Dispatcher
 
     $request = new Request();
 
-    $this->dispatchParams = Router::parse($request->getPath());
+    $this->dispatchParams = Router::parse($request->getPath(), $request->getMethod());
 
     $controller = $this->loadController($request);
 

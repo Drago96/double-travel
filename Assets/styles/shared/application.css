@@ -1,0 +1,35 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: "Arial";
+}
+
+header {
+    background-color: #333;
+    height: 5em;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.container {
+    height: calc(100% - 10em);
+    position: relative;
+}
+
+footer {
+    align-items: center;
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    height: 5em;
+    margin: 0;
+}
+
+body input,
+textarea {
+    font-size: 1em;
+}

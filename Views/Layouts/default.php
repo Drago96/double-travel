@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Double Travel</title>
-    <link rel="stylesheet" type="text/css" href="/Assets/styles/application.css">
+    <?php echo $this->partial("Shared/styles"); ?>
 </head>
 
 <body>
@@ -20,8 +20,9 @@
 </main>
 
 <footer>
-
+  <?php echo $this->partial("Shared/footer"); ?>
 </footer>
 
+<?php echo $this->partial("Shared/scripts"); ?>
 </body>
 </html>

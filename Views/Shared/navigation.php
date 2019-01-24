@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="/Assets/styles/navigation.css">
+<link rel="stylesheet" type="text/css" href="/Assets/styles/shared/navigation.css">
 
 <nav class="navigation">
     <a class="logo-link" href="/">

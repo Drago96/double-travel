@@ -19,6 +19,11 @@ class Request
     return $this->url_parts['path'];
   }
 
+  public function getMethod()
+  {
+    return $_SERVER['REQUEST_METHOD'];
+  }
+
   public function getForm()
   {
     return $this->secureForm();
@@ -28,8 +33,7 @@ class Request
   {
     $form = [];
 
-    foreach ($_POST as $key => $value)
-    {
+    foreach ($_POST as $key => $value) {
       $form[$key] = $this->secureInput($value);
     }
 

@@ -14,10 +14,10 @@ trait BeforeActionsConcern
       }
 
       if (array_key_exists("only", $beforeAction)) {
-        $forActions = $beforeAction["only"];
+        $onlyActions = $beforeAction["only"];
 
-        if(in_array($action, $forActions)) {
-          call_user_func([$this, $beforeAction["method"]]);
+        if(in_array($action, $onlyActions)) {
+          call_user_func([$this, $beforeAction["do"]]);
         }
 
         continue;
@@ -27,7 +27,7 @@ trait BeforeActionsConcern
         $exceptActions = $beforeAction["except"];
 
         if(!in_array($action, $exceptActions)) {
-          call_user_func([$this, $beforeAction["method"]]);
+          call_user_func([$this, $beforeAction["do"]]);
         }
       }
     }

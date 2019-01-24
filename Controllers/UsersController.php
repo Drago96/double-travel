@@ -3,8 +3,8 @@
 class UsersController extends Controller
 {
   protected $beforeActions = [
-    ["method" => "ensureAuthentication", "only" => ["logoutPost"]],
-    ["method" => "ensureAnonymous", "except" => ["logoutPost"]]
+    ["do" => "ensureAuthentication", "only" => ["logoutPost"]],
+    ["do" => "ensureAnonymous", "except" => ["logoutPost"]]
   ];
 
   public function login()

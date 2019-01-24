@@ -19,9 +19,17 @@ abstract class Controller
     $this->request = $request;
   }
 
-  protected function ensureAuthentication() {
-    if(!$this->isAuthenticated()) {
-      $this->redirect("/users/login?returnUrl=".$this->request->getUrl());
+  protected function ensureAuthentication()
+  {
+    if (!$this->isAuthenticated()) {
+      $this->redirect("/users/login");
+    }
+  }
+
+  protected function ensureAnonymous()
+  {
+    if ($this->isAuthenticated()) {
+      $this->redirect("/");
     }
   }
 }

@@ -7,6 +7,8 @@ require_once(ROOT . "Core/Database.php");
 require_once(ROOT . "Core/Model.php");
 require_once(ROOT . "Core/Controller/Controller.php");
 
+require_once(ROOT . "Models/User.php");
+
 class Dispatcher
 {
   private $dispatchParams;
@@ -21,7 +23,7 @@ class Dispatcher
 
     $controller = $this->loadController($request);
 
-    $controller->executeBeforeActions();
+    $controller->executeBeforeActions($this->dispatchParams["action"]);
 
     call_user_func_array([$controller, $this->dispatchParams["action"]], $this->dispatchParams["arguments"]);
   }

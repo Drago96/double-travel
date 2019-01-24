@@ -2,6 +2,7 @@
 
 require_once(ROOT . "Utilities/Validator.php");
 require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
+require_once(ROOT . "Utilities/Exceptions/SQLException.php");
 
 class User extends Model
 {
@@ -22,9 +23,57 @@ class User extends Model
     $this->password = $password;
   }
 
+  public static function exists($username)
+  {
+    $query = "SELECT username FROM users WHERE username=:username";
+
+    $stmt = Database::getConnection()->prepare($query);
+
+    $stmt->bindParam(":username", $username);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   /**
-   * @return bool
    * @throws ValidationException if validation fails
+   * @throws SQLException if query is unsuccessful
+   */
+  public function login()
+  {
+    if (!self::exists($this->username)) {
+      throw new ValidationException("Incorrect username or password.");
+    }
+
+    $query = "SELECT * FROM users WHERE username=:username";
+
+    $stmt = $this->connection->prepare($query);
+
+    $stmt->bindParam(":username", $this->username);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      if (!password_verify($this->password, $row['password_hash'])) {
+        throw new ValidationException("Incorrect username or password.");
+      }
+
+      $this->id = $row["id"];
+      $this->password = "";
+
+      return;
+    }
+
+    throw new SQLException($stmt->errorInfo()[2]);
+  }
+
+  /**
+   * @throws ValidationException if validation fails
+   * @throws SQLException if query is unsuccessful
    */
   public function register()
   {
@@ -34,11 +83,15 @@ class User extends Model
       throw new ValidationException(implode($validationErrors));
     }
 
+    if (self::exists($this->username)) {
+      throw new ValidationException("Username is already taken.");
+    }
+
     $query = '
           INSERT INTO users
           SET
             username = :username,
-            password = :password
+            password_hash = :password_hash
       ';
 
     $stmt = $this->connection->prepare($query);
@@ -46,19 +99,20 @@ class User extends Model
     $passwordHash = password_hash($this->password, PASSWORD_DEFAULT);
 
     $stmt->bindParam(':username', $this->username);
-    $stmt->bindParam(':password', $passwordHash);
+    $stmt->bindParam(':password_hash', $passwordHash);
+    $stmt->execute();
 
-    if ($stmt->execute()) {
-      if (!$stmt->rowCount()) {
-        return false;
-      }
-
+    if ($stmt->rowCount() > 0) {
       $this->id = $this->connection->lastInsertId();
-      return true;
+      $this->password = "";
+
+      return;
     }
 
-    return false;
+
+    throw new SQLException($stmt->errorInfo()[2]);
   }
+
 
   public function getValidationErrors()
   {

@@ -1,35 +1,47 @@
-html, body {
-    height: 100%;
-}
-
 body {
-    margin: 0;
-    font-family: "Arial";
+  height: 100%;
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Arial";
+  position: relative;
 }
 
 header {
-    background-color: #333;
-    height: 5em;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+  background-color: #333;
+  height: 4em;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .container {
-    height: calc(100% - 10em);
-    position: relative;
+  padding-left: 12em;
+  padding-right: 12em;
+  padding-top: 3em;
+}
+
+body::after {
+  content: '';
+  display: block;
+  height: 4em;
 }
 
 footer {
-    align-items: center;
-    background-color: #333;
-    display: flex;
-    justify-content: center;
-    height: 5em;
-    margin: 0;
+  align-items: center;
+  background-color: #333;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  height: 4em;
+  margin: 0;
+  position: absolute;
+  width: 100%;
 }
 
 body input,
 textarea {
-    font-size: 1em;
+  font-size: 1em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

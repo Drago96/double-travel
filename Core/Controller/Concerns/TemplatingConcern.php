@@ -6,6 +6,8 @@ trait TemplatingConcern
 
   public function render($filename, $data = [])
   {
+    extract($data);
+
     $content_for_layout = $this->partial(ucfirst(str_replace('Controller', '', get_class($this))) . '/' . $filename, $data);
 
     if ($this->layout == false) {

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <title>Double Travel</title>
-    <?php echo $this->partial("Shared/styles"); ?>
+  <meta charset="utf-8"/>
+  <title>Double Travel</title>
+  <link rel="icon"
+        type="image/png"
+        href="/Assets/images/favicon.png">
+  <?php echo $this->partial("Shared/styles"); ?>
 </head>
 
 <body>
-
-<nav>
-
-</nav>
-
 <header>
   <?php echo $this->partial("Shared/navigation"); ?>
 </header>

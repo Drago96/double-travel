@@ -15,6 +15,8 @@ class Dispatcher
 {
   private $dispatchParams;
 
+  private $excludedControllers = ["errors"];
+
   public function dispatch()
   {
     session_start();
@@ -33,14 +35,24 @@ class Dispatcher
 
     $this->validateArguments($controller, $actionName, $arguments, $request);
 
-    $controller->executeBeforeActions($actionName);
+    try {
+      $controller->executeBeforeActions($actionName);
 
-    call_user_func_array([$controller, $actionName], $arguments);
+      call_user_func_array([$controller, $actionName], $arguments);
+    } catch (Exception $e) {
+      $this->renderInternalServerError($request);
+    }
   }
 
   private function loadController($request)
   {
-    $controllerName = $this->dispatchParams["controller"] . "Controller";
+    $controllerPrefix = $this->dispatchParams["controller"];
+
+    if (in_array(strtolower($controllerPrefix), $this->excludedControllers)) {
+      $this->renderNotFound($request);
+    }
+
+    $controllerName = $controllerPrefix . "Controller";
 
     $file = ROOT . 'Controllers/' . $controllerName . '.php';
 
@@ -64,8 +76,12 @@ class Dispatcher
 
   private function validateArguments($controller, $actionName, $arguments, $request)
   {
-    $action = new ReflectionMethod($controller, $actionName);
-    if (count($arguments) !== $action->getNumberOfRequiredParameters()) {
+    try {
+      $action = new ReflectionMethod($controller, $actionName);
+      if (count($arguments) !== $action->getNumberOfRequiredParameters()) {
+        $this->renderNotFound($request);
+      }
+    } catch (ReflectionException $e) {
       $this->renderNotFound($request);
     }
   }
@@ -75,6 +91,15 @@ class Dispatcher
     $controller = new ErrorsController($request);
 
     $controller->notFound();
+
+    exit;
+  }
+
+  private function renderInternalServerError($request)
+  {
+    $controller = new ErrorsController($request);
+
+    $controller->internalServerError();
 
     exit;
   }

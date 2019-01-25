@@ -29,10 +29,6 @@ class UsersController extends Controller
       $formError = $e->getMessage();
 
       $this->render("login", ["formError" => $formError, "model" => $user]);
-    } catch (Exception $e) {
-      $formError = "An internal server error occurred.";
-
-      $this->render("login", ["formError" => $formError, "model" => $user]);
     }
   }
 
@@ -58,14 +54,11 @@ class UsersController extends Controller
       $formError = $e->getMessage();
 
       $this->render("register", ["formError" => $formError, "model" => $user]);
-    } catch (Exception $e) {
-      $formError = "An internal server error occurred.";
-
-      $this->render("register", ["formError" => $formError, "model" => $user]);
     }
   }
 
-  public function logoutPost() {
+  public function logoutPost()
+  {
     $this->clearCurrentUser();
 
     $this->redirect("/");

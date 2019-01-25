@@ -1,4 +1,4 @@
 RewriteEngine on
 
 RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
-RewriteRule ^([a-zA-Z0-9\-\_\/]*)$ server.php?p=$1
+RewriteRule ^.*$ server.php?p=$1

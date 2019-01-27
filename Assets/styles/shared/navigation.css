@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
   height: 100%;
-  margin: 0;
-  padding-left: 12em;
-  padding-right: 12em;
+  margin: 0 auto;
+  max-width: 1048px;
   top: 0;
+  width: 95%;
 }
 
 .navigation-links {

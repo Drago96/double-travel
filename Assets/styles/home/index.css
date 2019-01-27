@@ -1,0 +1,29 @@
+.jumbotron {
+  background-image: url("/Assets/images/jumbotron.png");
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 10px;
+  height: 300px;
+  position: relative;
+}
+
+.welcome-message {
+  color: #fff;
+  font-weight: normal;
+  left: 10%;
+  top: 10%;
+  position: absolute;
+}
+
+.welcome-message h1 {
+  font-style: italic;
+  font-size: 3em;
+  margin-bottom: 0;
+}
+
+.welcome-message p {
+  font-size: 1.3em;
+}

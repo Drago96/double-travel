@@ -7,6 +7,7 @@
   -moz-border-radius: 25px;
   border-radius: 10px;
   height: 300px;
+  margin-bottom: 2em;
   position: relative;
 }
 
@@ -26,4 +27,52 @@
 
 .welcome-message p {
   font-size: 1.3em;
+}
+
+.user-actions {
+  display: grid;
+  grid-template-columns: 47.5% 47.5%;
+  grid-column-gap: 5%;
+}
+
+.user-actions article {
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  background-color: #f5f5f0;
+  height: 450px;
+  position: relative;
+  width: 100%;
+}
+
+.user-actions .article-image {
+  -webkit-border-radius: 25px 25px 0px 0px;
+  -moz-border-radius: 25px 25px 0px 0px;
+  border-radius: 25px 25px 0px 0px;
+  object-fit: cover;
+  object-position: 50% 20%;
+  height: 150px;
+  width: 100%;
+}
+
+.user-actions .article-content h3 {
+  font-size: 1.65em;
+  margin-top: 0;
+  text-align: center;
+}
+
+.user-actions .article-content p {
+  font-size: 1.65em;
+  margin-top: 0;
+  text-align: center;
+}
+
+.user-actions .action-link {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.user-actions .article-content {
+  padding: 1.5rem;
 }

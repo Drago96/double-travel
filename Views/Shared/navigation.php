@@ -9,6 +9,7 @@
     <?php if ($this->isAuthenticated()): ?>
       <li><a href="/users/profile">Hello, <?php echo $this->getCurrentUser()->username ?></a></li>
       <li><a href="/">Home</a></li>
+      <li><a href="/travels/planner">Planner</a></li>
       <li>
         <form class="logout-form" method="post" action="/users/logout">
           <input type="submit" value="Logout"/>

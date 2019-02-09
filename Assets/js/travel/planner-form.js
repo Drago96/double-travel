@@ -2,8 +2,12 @@ class PlannerForm {
   constructor() {
     this.__form = document.getElementById("location-form");
 
-    this.__currentSection = new PlannerStartingLocation();
+    this.__currentSection = null;
     this.__currentFieldSet = null;
+
+    this.__currentArrivalDate = null;
+    this.__lastDepartureDate = null;
+    this.__currentDepartureDate = null;
 
     this.__nextLocationIndex = 0;
   }
@@ -23,19 +27,33 @@ class PlannerForm {
   }
 
   __displayStartingLocationFieldSet() {
-    const startingLocationFieldSet = this.__startingLocationSection.render(this.__countries);
-    this.__addFieldSetToForm(startingLocationFieldSet);
-    this.__currentFieldSet = startingLocationFieldSet;
+    const startingLocation = new PlannerStartingLocation();
 
-    this.__addStartingCountryEventListener();
+    this.__displayLocationFieldSet(startingLocation);
   }
 
-  __addStartingCountryEventListener() {
-    const startingCountrySelect = document.getElementById("starting-location[country]");
+  __displayNextLocationFieldSet() {
+    const nextLocation = new PlannerNextLocation(this.__nextLocationIndex, this.__currentDepartureDate);
 
-    startingCountrySelect.addEventListener("change", event => {
+    this.__displayLocationFieldSet(nextLocation);
+  }
+
+  __displayLocationFieldSet(location) {
+    const locationFieldSet = location.render(this.__countries);
+    this.__addFieldSetToForm(locationFieldSet);
+
+    this.__currentSection = location;
+    this.__currentFieldSet = locationFieldSet;
+
+    this.__addCountryEventListener();
+  }
+
+  __addCountryEventListener() {
+    const countrySelect = this.__currentFieldSet.querySelector("select[name*='[country]']");
+
+    countrySelect.addEventListener("change", event => {
       this.__currentSection.resetSectionOnFieldChange("country");
-      this.__disableAdditonalLocationButton();
+      this.__disableButtons();
 
       const countryId = event.target.value;
 
@@ -46,56 +64,73 @@ class PlannerForm {
           .then(response => response.json())
           .then(locations => {
             this.__locations[countryId] = locations;
-            this.__addLocationSelectToStartingSection(locations);
+            this.__addLocationSelect(locations);
           });
       } else {
-        this.__addLocationSelectToStartingSection(locations);
+        this.__addLocationSelect(locations);
       }
     });
   }
 
-  __addLocationSelectToStartingSection(locations) {
+  __addLocationSelect(locations) {
     this.__currentSection.addLocationSelect(locations);
-    this.__addStartingLocationEventListener();
+    this.__addLocationEventListener();
   }
 
-  __addStartingLocationEventListener() {
-    const startingLocationSelect = document.getElementById("starting-location[location]");
+  __addLocationEventListener() {
+    const locationSelect = this.__currentFieldSet.querySelector("select[name*='[location]']");
 
-    startingLocationSelect.addEventListener("change", event => {
+    locationSelect.addEventListener("change", event => {
       this.__currentSection.resetSectionOnFieldChange("location");
-      this.__disableAdditonalLocationButton();
+      this.__disableButtons();
 
-      this.__addDepartureDateToStartingInput();
+      if(this.__currentSectionIsStartingLocation()) {
+        this.__addDepartureDateInput();
+      } else {
+        this.__addArrivalDateInput();
+      }
     });
   }
 
-  __addDepartureDateToStartingInput() {
-    this.__currentSection.addDepartureDateInput();
-    this.__addStartingDepartureDateEventListener();
+  __addArrivalDateInput() {
+    this.__currentSection.addArrivalDateInput(this.__lastDepartureDate);
+    this.__addArrivalDateEventListener();
   }
 
-  __addStartingDepartureDateEventListener() {
-    const startingDepartureDateInput = document.getElementById("starting-location[departure-date]");
+  __addArrivalDateEventListener() {
+    const arrivalDateInput = this.__currentFieldSet.querySelector("input[name*='[arrivalDate]']");
 
-    startingDepartureDateInput.addEventListener("change", event => {
+    arrivalDateInput.addEventListener("change", event => {
+      this.__currentSection.resetSectionOnFieldChange("arrivalDate");
+      this.__disableButtons();
+
+      this.__currentArrivalDate = event.target.value;
+
+      this.__addDepartureDateInput();
+    });
+  }
+
+  __addDepartureDateInput() {
+    this.__currentSection.addDepartureDateInput(this.__currentArrivalDate);
+    this.__addDepartureDateEventListener();
+  }
+
+  __addDepartureDateEventListener() {
+    const departureDateInput = this.__currentFieldSet.querySelector("input[name*='[departureDate]']");
+
+    departureDateInput.addEventListener("change", event => {
       this.__currentDepartureDate = event.target.value;
+
       this.__enableAdditionalLocationButton();
+
+      if(!this.__currentSectionIsStartingLocation()) {
+        this.__enableSubmitButton();
+      }
     });
   }
 
-  __displayNextLocationFieldSet() {
-    const nextLocation = new PlannerNextLocation(this.__nextLocationIndex, this.__currentDepartureDate);
-
-    const nextLocationFieldSet = nextLocation.render(this.__countries);
-    this.__addFieldSetToForm(nextLocationFieldSet);
-    this.__currentFieldSet = nextLocationFieldSet;
-
-    this.__addNextLocationCountryEventListener();
-  }
-
-  __addNextLocationCountryEventListener() {
-
+  __currentSectionIsStartingLocation() {
+    return this.__currentSection.constructor.name === "PlannerStartingLocation";
   }
 
   __addAdditionalLocationButtonEventListener() {
@@ -106,8 +141,9 @@ class PlannerForm {
       this.__disableFieldSet(this.__currentFieldSet);
       this.__displayNextLocationFieldSet();
 
+      this.__lastDepartureDate = this.__currentDepartureDate;
       this.__nextLocationIndex ++;
-      this.__disableAdditonalLocationButton();
+      this.__disableButtons();
     });
   }
 
@@ -117,17 +153,34 @@ class PlannerForm {
     additionalLocationButton.disabled = false;
   }
 
+  __enableSubmitButton() {
+    const submitButton = document.getElementById("submit-travel-button");
+    submitButton.title = "";
+    submitButton.disabled = false;
+  }
+
+  __disableButtons() {
+    this.__disableAdditonalLocationButton();
+    this.__disableSubmitButton();
+  }
+
   __disableAdditonalLocationButton() {
     const additionalLocationButton = document.getElementById("add-new-location-button");
     additionalLocationButton.title ="Please fill all information for the current location.";
     additionalLocationButton.disabled = true;
   }
 
+  __disableSubmitButton() {
+    const submitButton = document.getElementById("submit-travel-button");
+    submitButton.title = "Please select at least one location to visit.";
+    submitButton.disabled = true;
+  }
+
   __disableFieldSet(fieldSet) {
     const inputs = fieldSet.querySelectorAll("select, input");
 
     inputs.forEach(input => {
-      input.disabled = true;
+      input.classList.add("disabled");
     });
   }
 

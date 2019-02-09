@@ -1,0 +1,17 @@
+.notification {
+  text-align: center;
+  border-radius: 5px;
+  color: #ffffff;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.5em;
+  margin-bottom: 2em;
+}
+
+.notification.success {
+  background-color: #5cb85c;
+}
+
+.notification.error {
+  background-color: #d9534f;
+}

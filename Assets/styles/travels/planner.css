@@ -50,8 +50,8 @@ input[type=date] {
   font-size: 1.5em;
 }
 
-select:disabled,
-input:disabled {
+.disabled {
+  pointer-events: none;
   background-color: #EBEBE4;
 }
 
@@ -60,23 +60,30 @@ input:disabled {
   padding-left: 0.75rem;
 }
 
-.form-buttons button {
+.form-buttons button,
+.form-buttons input {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   height: 3em;
   padding: 1rem;
   font-size: 1.5em;
+  cursor: pointer;
+}
+
+.form-buttons button:disabled,
+.form-buttons input:disabled {
+  cursor: initial;
+  color: graytext;
+  background-color: buttonface;
 }
 
 .add-new-location-button {
   background-color: #E8C331;
-  cursor: pointer;
   color: #f5f5f0;
 }
 
-.add-new-location-button:disabled {
-  background-color: #f0ad4e;
-  color: #EBEBE4;
-  cursor: initial;
+.submit-travel-button {
+  background-color: #5cb85c;
+  color: #f5f5f0;
 }

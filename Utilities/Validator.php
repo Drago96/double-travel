@@ -12,4 +12,12 @@ class Validator
 
         return null;
     }
+
+    public static function validDate($dateString, $entity) {
+      if(!(bool)strtotime($dateString)) {
+        return "${entity} must be a valid date.";
+      }
+
+      return null;
+    }
 }

@@ -2,7 +2,6 @@
 
 require_once(ROOT . "Utilities/Validator.php");
 require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
-require_once(ROOT . "Utilities/Exceptions/SQLException.php");
 
 class User extends Model
 {
@@ -39,6 +38,22 @@ class User extends Model
     return false;
   }
 
+  public static function existsById($id)
+  {
+    $query = "SELECT id FROM users WHERE id=:id";
+
+    $stmt = Database::getConnection()->prepare($query);
+
+    $stmt->bindParam(":id", $id);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * @throws ValidationException if validation fails
    */
@@ -63,8 +78,6 @@ class User extends Model
 
       $this->id = $user["id"];
       $this->password = "";
-
-      return;
     }
   }
 
@@ -101,8 +114,6 @@ class User extends Model
     if ($stmt->rowCount() > 0) {
       $this->id = $this->connection->lastInsertId();
       $this->password = "";
-
-      return;
     }
   }
 

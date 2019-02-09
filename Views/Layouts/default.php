@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Double Travel</title>
   <link rel="icon"
         type="image/png"
@@ -15,6 +16,7 @@
 </header>
 
 <main role="main" class="container">
+  <?php echo $this->partial("Shared/notifications"); ?>
   <?php echo $content_for_layout; ?>
 </main>
 

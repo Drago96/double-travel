@@ -23,3 +23,45 @@ CREATE TABLE IF NOT EXISTS locations
   CONSTRAINT FK_LOCATION_COUNTRY FOREIGN KEY (country_id)
     REFERENCES countries (id)
 );
+
+CREATE TABLE IF NOT EXISTS travels
+(
+  id                      INT      NOT NULL AUTO_INCREMENT,
+  user_id                 INT      NOT NULL,
+  starting_location_id    INT      NOT NULL,
+  starting_departure_date DATE     NOT NULL,
+  created_at              DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_TRAVEL_USER FOREIGN KEY (user_id)
+    REFERENCES users (id),
+  CONSTRAINT FK_TRAVEL_STARTING_LOCATION FOREIGN KEY (starting_location_id)
+    REFERENCES locations (id)
+);
+
+CREATE TABLE IF NOT EXISTS travel_locations
+(
+  id             INT  NOT NULL AUTO_INCREMENT,
+  travel_id      INT  NOT NULL,
+  location_id    INT  NOT NULL,
+  arrival_date   DATE NOT NULL,
+  departure_date DATE NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_TRAVEL_LOCATION_TRAVEL FOREIGN KEY (travel_id)
+    REFERENCES travels (id),
+  CONSTRAINT FK_TRAVEL_LOCATION_LOCATION FOREIGN KEY (location_id)
+    REFERENCES locations (id)
+);
+
+
+CREATE TABLE IF NOT EXISTS review
+(
+  user_id    INT           NOT NULL,
+  travel_id  INT           NOT NULL,
+  content    VARCHAR(5000) NOT NULL,
+  created_at DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, travel_id),
+  CONSTRAINT FK_REVIEW_USER FOREIGN KEY (user_id)
+    REFERENCES users (id),
+  CONSTRAINT FK_REVIEW_TRAVEL FOREIGN KEY (travel_id)
+    REFERENCES travels (id)
+)

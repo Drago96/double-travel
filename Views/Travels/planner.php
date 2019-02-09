@@ -7,8 +7,11 @@
 <form id="location-form" class="location-form" style="display: none" action="/travels/create" method="POST">
   <div class="field-sets"></div>
   <div class="form-buttons">
-    <button disabled title="Please fill all information for the current location." id="add-new-location-button" class="add-new-location-button">Add new location</button>
-    <input value="asd" type="submit"/>
+    <button disabled title="Please fill all information for the current location." id="add-new-location-button"
+            class="add-new-location-button">Add new location
+    </button>
+    <input disabled title="Please select at least one location to visit." id="submit-travel-button"
+           class="submit-travel-button" value="Create" type="submit"/>
   </div>
 </form>
 

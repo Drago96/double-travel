@@ -10,6 +10,8 @@ require_once(ROOT . "Core/Controller/Controller.php");
 require_once(ROOT . "Controllers/ErrorsController.php");
 
 require_once(ROOT . "Models/User.php");
+require_once(ROOT . "Models/Country.php");
+require_once(ROOT . "Models/Location.php");
 
 class Dispatcher
 {

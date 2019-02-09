@@ -41,7 +41,6 @@ class User extends Model
 
   /**
    * @throws ValidationException if validation fails
-   * @throws SQLException if query is unsuccessful
    */
   public function login()
   {
@@ -57,23 +56,20 @@ class User extends Model
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      if (!password_verify($this->password, $row['password_hash'])) {
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      if (!password_verify($this->password, $user['password_hash'])) {
         throw new ValidationException("Incorrect username or password.");
       }
 
-      $this->id = $row["id"];
+      $this->id = $user["id"];
       $this->password = "";
 
       return;
     }
-
-    throw new SQLException($stmt->errorInfo()[2]);
   }
 
   /**
    * @throws ValidationException if validation fails
-   * @throws SQLException if query is unsuccessful
    */
   public function register()
   {
@@ -108,9 +104,6 @@ class User extends Model
 
       return;
     }
-
-
-    throw new SQLException($stmt->errorInfo()[2]);
   }
 
 

@@ -2,11 +2,19 @@
 
 class Request
 {
-  private $url_parts;
+  private $urlParts;
+  private $queryParameters;
 
   public function __construct()
   {
-    $this->url_parts = parse_url($this->getUrl());
+    $this->urlParts = parse_url($this->getUrl());
+
+    if(array_key_exists("query", $this->urlParts, )) {
+      parse_str($this->urlParts["query"], $queryParameters);
+      $this->queryParameters = $queryParameters;
+    } else {
+      $this->queryParameters = [];
+    }
   }
 
   public function getUrl()
@@ -16,7 +24,7 @@ class Request
 
   public function getPath()
   {
-    return $this->url_parts['path'];
+    return $this->urlParts['path'];
   }
 
   public function getMethod()
@@ -26,15 +34,28 @@ class Request
 
   public function getForm()
   {
-    return $this->secureForm();
+    return $this->secureForm($_POST);
   }
 
-  private function secureForm()
+  public function getParam($name)
+  {
+    if(!array_key_exists($name, $this->queryParameters)) {
+      return null;
+    }
+
+    return $this->queryParameters[$name];
+  }
+
+  private function secureForm($formParams)
   {
     $form = [];
 
-    foreach ($_POST as $key => $value) {
-      $form[$key] = $this->secureInput($value);
+    foreach ($formParams as $key => $value) {
+      if(is_array($value)) {
+        $form[$key] = $this->secureForm($value);
+      } else {
+        $form[$key] = $this->secureInput($value);
+      }
     }
 
     return $form;

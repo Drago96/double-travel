@@ -14,6 +14,7 @@ class Database
   {
     if (is_null(self::$pdo)) {
       self::$pdo = new PDO("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_NAME, Config::DB_USERNAME, Config::DB_PASSWORD);
+      self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     return self::$pdo;

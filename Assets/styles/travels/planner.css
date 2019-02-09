@@ -1,0 +1,82 @@
+.title {
+  text-align: center;
+}
+
+.location-planner {
+  background-color: #f5f5f0;
+  margin-bottom: 1rem;
+}
+
+.location-planner legend {
+  font-size: 1.5em;
+}
+
+.location-inputs {
+  display: flex;
+}
+
+.location-input {
+  margin-top: 1rem;
+  width: 25%
+}
+
+.location-inputs input,
+.location-inputs select {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
+  border: solid 1px #ccc;
+  display: block;
+  font-size: 1rem;
+  padding-left: 1em;
+  height: 3rem;
+  width: 100%;
+}
+
+.location-inputs label {
+  display: block;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="date"]::-webkit-clear-button {
+  display: none;
+}
+
+input[type=date] {
+  font-size: 1.5em;
+}
+
+select:disabled,
+input:disabled {
+  background-color: #EBEBE4;
+}
+
+.form-buttons {
+  margin-top: 2rem;
+  padding-left: 0.75rem;
+}
+
+.form-buttons button {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  height: 3em;
+  padding: 1rem;
+  font-size: 1.5em;
+}
+
+.add-new-location-button {
+  background-color: #E8C331;
+  cursor: pointer;
+  color: #f5f5f0;
+}
+
+.add-new-location-button:disabled {
+  background-color: #f0ad4e;
+  color: #EBEBE4;
+  cursor: initial;
+}

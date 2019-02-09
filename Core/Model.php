@@ -19,7 +19,9 @@ abstract class Model
     return count($this->getValidationErrors()) === 0;
   }
 
-  abstract public function getValidationErrors();
+  public function getValidationErrors() {
+    return [];
+  }
 }
 
 function getModelPublicProperties($object) {

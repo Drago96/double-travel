@@ -6,3 +6,20 @@ CREATE TABLE IF NOT EXISTS users
   created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS countries
+(
+  id   INT         NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL UNIQUE,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS locations
+(
+  id         INT         NOT NULL AUTO_INCREMENT,
+  name       VARCHAR(50) NOT NULL UNIQUE,
+  country_id INT         NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_LOCATION_COUNTRY FOREIGN KEY (country_id)
+    REFERENCES countries (id)
+);

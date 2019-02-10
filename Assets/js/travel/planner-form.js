@@ -18,6 +18,7 @@ class PlannerForm {
       .then(countries => {
         this.__countries = countries;
         this.__locations = {};
+        this.__reviews = {};
 
         this.__displayForm();
         this.__displayStartingLocationFieldSet();
@@ -59,7 +60,7 @@ class PlannerForm {
 
       const locations = this.__locations[countryId];
 
-      if(!locations) {
+      if (!locations) {
         fetch(`/locations?country_id=${countryId}`)
           .then(response => response.json())
           .then(locations => {
@@ -84,16 +85,70 @@ class PlannerForm {
       this.__currentSection.resetSectionOnFieldChange("location");
       this.__disableButtons();
 
-      if(this.__currentSectionIsStartingLocation()) {
+      if (this.__currentSectionIsStartingLocation()) {
         this.__addDepartureDateInput();
       } else {
         this.__addArrivalDateInput();
+
+        this.__currentSection.addReviewLinkForLocation();
+
+        const locationId = event.target.value;
+        this.__addReviewsLinkEventListener(locationId);
       }
     });
   }
 
+  __addReviewsLinkEventListener(locationId) {
+    const reviewsLink = this.__currentFieldSet.querySelector(".review-link");
+    reviewsLink.addEventListener("click", () => {
+      const location = this.__getLocationInfoById(locationId);
+
+      if (this.__reviews[locationId]) {
+        this.__showReviewsModal(location, this.__reviews[locationId]);
+      } else {
+        fetch(`/reviews?location_id=${locationId}`)
+          .then(response => response.json())
+          .then(reviews => {
+            this.__reviews[locationId] = reviews;
+
+            this.__showReviewsModal(location, reviews);
+          })
+      }
+    });
+  }
+
+  __showReviewsModal(location, reviews) {
+    const title = `Reviews for ${location.name}, ${location.country.name}`;
+    const content = this.__renderUserReviews(reviews);
+
+    new Modal().show(title, content);
+  }
+
+  __renderUserReviews(reviews) {
+    if (reviews.length === 0) {
+      return `<h1 class="no-reviews">There are no reviews for this location. &#9785;</h1>`
+    }
+
+    return `
+      <ul class="reviews-list">
+        ${reviews.map(review => `
+          <li class="review">
+            <span>
+              <span class="reviewer">${review.username}</span> 
+              <span class="visited">(visited from ${review.arrivalDate} to ${review.departureDate})</span>
+            </span>
+            <p>
+              ${review.content}
+            </p>
+            <span class="review-posted-date">posted on ${this.__formatDate(new Date(review.createdAt))}</span>
+          </li>
+        `).join("")}
+      </ul>
+    `;
+  }
+
   __addArrivalDateInput() {
-    this.__currentSection.addArrivalDateInput(this.__lastDepartureDate);
+    this.__currentSection.addArrivalDateInput(this.__lastDepartureDate || this.__formatDate(new Date()));
     this.__addArrivalDateEventListener();
   }
 
@@ -111,7 +166,7 @@ class PlannerForm {
   }
 
   __addDepartureDateInput() {
-    this.__currentSection.addDepartureDateInput(this.__currentArrivalDate);
+    this.__currentSection.addDepartureDateInput(this.__currentArrivalDate || this.__formatDate(new Date()));
     this.__addDepartureDateEventListener();
   }
 
@@ -123,7 +178,7 @@ class PlannerForm {
 
       this.__enableAdditionalLocationButton();
 
-      if(!this.__currentSectionIsStartingLocation()) {
+      if (!this.__currentSectionIsStartingLocation()) {
         this.__enableSubmitButton();
       }
     });
@@ -142,7 +197,7 @@ class PlannerForm {
       this.__displayNextLocationFieldSet();
 
       this.__lastDepartureDate = this.__currentDepartureDate;
-      this.__nextLocationIndex ++;
+      this.__nextLocationIndex++;
       this.__disableButtons();
     });
   }
@@ -166,7 +221,7 @@ class PlannerForm {
 
   __disableAdditonalLocationButton() {
     const additionalLocationButton = document.getElementById("add-new-location-button");
-    additionalLocationButton.title ="Please fill all information for the current location.";
+    additionalLocationButton.title = "Please fill all information for the current location.";
     additionalLocationButton.disabled = true;
   }
 
@@ -195,5 +250,39 @@ class PlannerForm {
     loader.remove();
 
     this.__form.style.display = "block";
+  }
+
+  __getLocationInfoById(locationId) {
+    for (const countryId of Object.keys(this.__locations)) {
+      const location = this.__locations[countryId].find(location => location.id === locationId);
+
+      if (location) {
+        const country = this.__countries.find(country => country.id === countryId);
+
+        return {
+          id: locationId,
+          name: location.name,
+          country: {
+            name: country.name
+          }
+        };
+      }
+    }
+  }
+
+  __formatDate(date) {
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    if(day<10){
+      day='0' + day
+    }
+
+    if(month<10){
+      month='0' + month
+    }
+
+    return `${year}-${month}-${day}`;
   }
 }

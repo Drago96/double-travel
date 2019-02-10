@@ -34,3 +34,8 @@ VALUES (1, 2, '2018-02-22', '2018-02-25'),
        (3, 4, '2018-04-10', '2018-04-15'),
        (4, 3, '2016-10-10', '2016-10-11'),
        (4, 5, '2016-11-11', '2016-11-13');
+
+INSERT INTO reviews(user_id, travel_location_id, content)
+VALUES (1, 1, 'A great place to visit.'),
+       (1, 2, 'Left a sore taste in my mouth.'),
+       (2, 5, 'Not as bad as other people say.');

@@ -53,15 +53,15 @@ CREATE TABLE IF NOT EXISTS travel_locations
 );
 
 
-CREATE TABLE IF NOT EXISTS review
+CREATE TABLE IF NOT EXISTS reviews
 (
-  user_id    INT           NOT NULL,
-  travel_id  INT           NOT NULL,
-  content    VARCHAR(5000) NOT NULL,
-  created_at DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (user_id, travel_id),
+  user_id            INT           NOT NULL,
+  travel_location_id INT           NOT NULL,
+  content            VARCHAR(5000) NOT NULL,
+  created_at         DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, travel_location_id),
   CONSTRAINT FK_REVIEW_USER FOREIGN KEY (user_id)
     REFERENCES users (id),
-  CONSTRAINT FK_REVIEW_TRAVEL FOREIGN KEY (travel_id)
-    REFERENCES travels (id)
+  CONSTRAINT FK_REVIEW_TRAVEL FOREIGN KEY (travel_location_id)
+    REFERENCES travel_locations (id)
 )

@@ -51,7 +51,7 @@ class PlannerFieldSet {
 
     departureDateInput.innerHTML = `
       <label for="${this.__name}[departure-date]">Departure Date</label>
-      <input min="${minDate || this.__formatDate(new Date())}" type="date" name="${this.__name}[departureDate]" id="${this.__name}[departure-date]" />
+      <input min="${minDate}" type="date" name="${this.__name}[departureDate]" id="${this.__name}[departure-date]" />
     `;
 
     this.addElementToFieldSet(departureDateInput);
@@ -82,21 +82,5 @@ class PlannerFieldSet {
 
   __defaultOption() {
     return "<option disabled selected value></option>";
-  }
-
-  __formatDate(date) {
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    if(day<10){
-      day='0' + day
-    }
-
-    if(month<10){
-      month='0' + month
-    }
-
-    return `${year}-${month}-${day}`;
   }
 }

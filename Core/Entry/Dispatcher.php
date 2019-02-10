@@ -14,6 +14,7 @@ require_once(ROOT . "Models/Country.php");
 require_once(ROOT . "Models/Location.php");
 require_once(ROOT . "Models/Travel.php");
 require_once(ROOT . "Models/TravelLocation.php");
+require_once(ROOT . "Models/Review.php");
 
 class Dispatcher
 {

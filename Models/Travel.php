@@ -5,6 +5,8 @@ require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
 
 class Travel extends Model
 {
+  protected static $tableName = "travels";
+
   public $id;
   public $userId;
   public $startingLocationId;
@@ -16,22 +18,6 @@ class Travel extends Model
     $this->userId = $userId;
     $this->startingLocationId = $startingLocationId;
     $this->startingDepartureDate = $startingDepartureDate;
-  }
-
-  public static function existsById($id)
-  {
-    $query = "SELECT id FROM travels WHERE id=:id";
-
-    $stmt = Database::getConnection()->prepare($query);
-
-    $stmt->bindParam(":id", $id);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-      return true;
-    }
-
-    return false;
   }
 
   /**
@@ -66,7 +52,8 @@ class Travel extends Model
 
   public static function getPastTravels($userId)
   {
-    $query = self::travelsForUserQuery() . " AND return_date < CURDATE()";
+    $query = self::travelsForUserQuery() . " AND return_date < CURDATE() 
+                                            ORDER BY travels.starting_departure_date ASC";
 
     return self::getTravels($query, $userId);
   }
@@ -75,14 +62,16 @@ class Travel extends Model
   {
     $query = self::travelsForUserQuery() . "
               AND starting_departure_date <= CURDATE()
-              AND return_date >= CURDATE()";
+              AND return_date >= CURDATE()
+              ORDER BY travels.starting_departure_date ASC";
 
     return self::getTravels($query, $userId);
   }
 
   public static function getUpcomingTravels($userId)
   {
-    $query = self::travelsForUserQuery() . " AND starting_departure_date > CURDATE()";
+    $query = self::travelsForUserQuery() . " AND starting_departure_date > CURDATE()
+                                             ORDER BY travels.starting_departure_date ASC";
 
     return self::getTravels($query, $userId);
   }
@@ -144,13 +133,13 @@ class Travel extends Model
       array_push($errors, $startingDepartureDateError);
     }
 
-    $userExists = User::existsById($this->userId);
+    $userExists = User::exists($this->userId);
 
     if (!$userExists) {
       array_push($errors, "User does not exist.");
     }
 
-    $locationExists = Location::existsById($this->startingLocationId);
+    $locationExists = Location::exists($this->startingLocationId);
 
     if (!$locationExists) {
       array_push($errors, "Starting location does not exist.");

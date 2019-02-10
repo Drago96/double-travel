@@ -67,7 +67,7 @@ class PlannerFieldSet {
 
   __createLocationInputWrapper() {
     const locationInputWrapper = document.createElement("div");
-    locationInputWrapper.className = "location-input";
+    locationInputWrapper.classList.add("location-input");
 
     return locationInputWrapper;
   }

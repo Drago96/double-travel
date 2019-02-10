@@ -2,21 +2,8 @@
 
 class Location extends Model
 {
-  public static function existsById($id)
-  {
-    $query = "SELECT id FROM locations WHERE id=:id";
+  protected static $tableName = "locations";
 
-    $stmt = Database::getConnection()->prepare($query);
-
-    $stmt->bindParam(":id", $id);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-      return true;
-    }
-
-    return false;
-  }
 
   public static function findByCountry($countryId)
   {

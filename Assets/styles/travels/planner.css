@@ -71,6 +71,11 @@ input[type=date] {
   cursor: pointer;
 }
 
+.form-buttons button:focus,
+.form-buttons input:focus {
+  outline: 0;
+}
+
 .form-buttons button:disabled,
 .form-buttons input:disabled {
   cursor: initial;

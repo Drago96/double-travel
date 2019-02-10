@@ -5,6 +5,7 @@ require_once("Concerns/RoutingConcern.php");
 require_once("Concerns/TemplatingConcern.php");
 require_once("Concerns/BeforeActionsConcern.php");
 require_once("Concerns/JsonConcern.php");
+require_once("Concerns/NotificationsConcern.php");
 
 abstract class Controller
 {
@@ -13,25 +14,12 @@ abstract class Controller
   use TemplatingConcern;
   use BeforeActionsConcern;
   use JsonConcern;
+  use NotificationsConcern;
 
   public $request;
 
   public function __construct(Request $request)
   {
     $this->request = $request;
-  }
-
-  protected function ensureAuthentication()
-  {
-    if (!$this->isAuthenticated()) {
-      $this->redirect("/users/login");
-    }
-  }
-
-  protected function ensureAnonymous()
-  {
-    if ($this->isAuthenticated()) {
-      $this->redirect("/");
-    }
   }
 }

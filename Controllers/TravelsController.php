@@ -30,7 +30,7 @@ class TravelsController extends Controller
   }
 
     $this->notifySuccess("Your journey has been recorded successfully.");
-    $this->redirect("/users/profile");
+    $this->redirect("/");
   }
 
   public function past() {

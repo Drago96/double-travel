@@ -2,6 +2,8 @@
 
 class Country extends Model
 {
+  protected static $tableName = "countries";
+
   public static function all()
   {
     $query = "SELECT * FROM countries";

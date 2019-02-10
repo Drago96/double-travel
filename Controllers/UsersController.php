@@ -3,8 +3,8 @@
 class UsersController extends Controller
 {
   protected $beforeActions = [
-    ["do" => "ensureAuthentication", "only" => ["logoutPost"]],
-    ["do" => "ensureAnonymous", "except" => ["logoutPost"]]
+    ["do" => "ensureAuthentication", "only" => ["logoutPost", "profile"]],
+    ["do" => "ensureAnonymous", "except" => ["logoutPost", "profile"]]
   ];
 
   public function login()
@@ -62,5 +62,10 @@ class UsersController extends Controller
     $this->clearCurrentUser();
 
     $this->redirect("/");
+  }
+
+  public function profile()
+  {
+    $this->render("profile");
   }
 }

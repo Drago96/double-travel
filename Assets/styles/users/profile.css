@@ -1,0 +1,74 @@
+.title {
+  text-align: center;
+}
+
+.tabs {
+  background-color: #f5f5f0;
+  border: 1px solid #000000;
+}
+
+.tabs-links button {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  height: 2em;
+  background-color: #333;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5em;
+  cursor: pointer;
+  width: 8rem;
+}
+
+.tabs-links button:hover {
+  background-color: #000000;
+}
+
+.tabs-links button.active {
+  color: #000000;
+  background-color: #d3d3d3;
+}
+
+.tabs-links button:focus {
+  outline: 0;
+}
+
+.tabs-content {
+  margin-top: 2em;
+}
+
+.travels {
+  min-height: 300px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.travel {
+  font-size: 1.5em;
+  padding: 1em;
+  margin-bottom: 0.5em;
+  background-color: #d3d3d3;
+}
+
+.travel-details {
+  float: right;
+  cursor: pointer;
+  color: #07C;
+}
+
+.sub-travels {
+  list-style: none;
+}
+
+.sub-travel {
+  padding: 1em;
+  margin-top: 0.5em;
+  background-color: gainsboro;
+}
+
+.no-travels {
+  text-align: center;
+  font-weight: normal;
+  font-size: 2em;
+  padding-top: 2em;
+}

@@ -5,6 +5,8 @@ require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
 
 class User extends Model
 {
+  protected static $tableName = "users";
+
   const USERNAME_MIN_LENGTH = 3;
   const USERNAME_MAX_LENGTH = 100;
 
@@ -22,7 +24,7 @@ class User extends Model
     $this->password = $password;
   }
 
-  public static function exists($username)
+  public static function existsByUsername($username)
   {
     $query = "SELECT username FROM users WHERE username=:username";
 
@@ -38,28 +40,12 @@ class User extends Model
     return false;
   }
 
-  public static function existsById($id)
-  {
-    $query = "SELECT id FROM users WHERE id=:id";
-
-    $stmt = Database::getConnection()->prepare($query);
-
-    $stmt->bindParam(":id", $id);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-      return true;
-    }
-
-    return false;
-  }
-
   /**
    * @throws ValidationException if validation fails
    */
   public function login()
   {
-    if (!self::exists($this->username)) {
+    if (!self::existsByUsername($this->username)) {
       throw new ValidationException("Incorrect username or password.");
     }
 
@@ -92,7 +78,7 @@ class User extends Model
       throw new ValidationException(implode($validationErrors));
     }
 
-    if (self::exists($this->username)) {
+    if (self::existsByUsername($this->username)) {
       throw new ValidationException("Username is already taken.");
     }
 

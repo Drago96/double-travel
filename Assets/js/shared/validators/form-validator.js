@@ -15,7 +15,6 @@ class FormValidator {
   __setDOMElements() {
     this.__form = document.getElementById(this.__validationOptions.formId);
     this.__formFields = [...this.__form.elements].filter(el => el.type !== 'submit');
-    this.__formSubmitButton = [...this.__form.elements].find(el => el.type === 'submit');
   }
 
   __initializeFormState() {

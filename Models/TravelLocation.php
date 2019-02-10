@@ -5,6 +5,8 @@ require_once(ROOT . "Utilities/Exceptions/ValidationException.php");
 
 class TravelLocation extends Model
 {
+  protected static $tableName = "travel_locations";
+
   public $id;
   public $travelId;
   public $locationId;
@@ -22,7 +24,38 @@ class TravelLocation extends Model
 
   public static function getByTravelId($travelId)
   {
-    return [];
+    $query = "SELECT * FROM `travel_locations`
+            JOIN(SELECT name as location_name, id as location_id, country_id FROM locations) locations on travel_locations.location_id = locations.location_id
+            JOIN(SELECT name as country_name, id as country_id FROM countries) countries on locations.country_id = countries.country_id
+            WHERE travel_id = :travel_id ";
+
+    $stmt = Database::getConnection()->prepare($query);
+
+    $stmt->bindParam(":travel_id", $travelId);
+
+    $stmt->execute();
+
+    $travelLocations = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      $travelLocation = [
+        "id" => $row["id"],
+        "location" => [
+          "id" => $row["location_id"],
+          "name" => $row["location_name"]
+        ],
+        "country" => [
+          "id" => $row["country_id"],
+          "name" => $row["country_name"]
+        ],
+        "arrivalDate" => $row["arrival_date"],
+        "departureDate" => $row["departure_date"]
+      ];
+
+      array_push($travelLocations, $travelLocation);
+    }
+
+    return $travelLocations;
   }
 
   /**
@@ -73,13 +106,13 @@ class TravelLocation extends Model
       array_push($errors, $departureDateError);
     }
 
-    $travelExists = Travel::existsById($this->travelId);
+    $travelExists = Travel::exists($this->travelId);
 
     if (!$travelExists) {
       array_push($errors, "Travel does not exist.");
     }
 
-    $locationExists = Location::existsById($this->locationId);
+    $locationExists = Location::exists($this->locationId);
 
     if (!$locationExists) {
       array_push($errors, "Starting location does not exist.");
